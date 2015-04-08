@@ -20,7 +20,7 @@ import com.mygdx.game.GameState;
 import com.mygdx.game.MyCE;
 import com.mygdx.game.MyGdxGame;
 import com.strongjoshua.console.Console;
-import org.apache.commons.codec.binary.Base64;
+//import org.apache.commons.codec.binary.Base64;
 
 import java.math.BigInteger;
 
@@ -81,19 +81,19 @@ public class GameScreen extends BaseScreen {
 			}
 		});
 
-		Gdx.app.log("State json:", json.prettyPrint(state));
-		String jsonState = json.toJson(state);
-		String xorJsonState = xor(jsonState);
-		String b64e = Base64.encodeBase64String(xorJsonState.getBytes());
-
-		Gdx.app.log("State json encoded:", b64e);
-
-		String b64d = xor(new String(Base64.decodeBase64(b64e)));
-		Gdx.app.log("State json decoded:", b64d);
-
-		// check version and decode it...
-		GameState stateFromJson = json.fromJson(GameState.class, b64d);
-		Gdx.app.log("State from json:", stateFromJson.toString());
+//		Gdx.app.log("State json:", json.prettyPrint(state));
+//		String jsonState = json.toJson(state);
+//		String xorJsonState = xor(jsonState);
+//		String b64e = Base64.encodeBase64String(xorJsonState.getBytes());
+//
+//		Gdx.app.log("State json encoded:", b64e);
+//
+//		String b64d = xor(new String(Base64.decodeBase64(b64e)));
+//		Gdx.app.log("State json decoded:", b64d);
+//
+//		// check version and decode it...
+//		GameState stateFromJson = json.fromJson(GameState.class, b64d);
+//		Gdx.app.log("State from json:", stateFromJson.toString());
 	}
 
 	private String xor(String input) {

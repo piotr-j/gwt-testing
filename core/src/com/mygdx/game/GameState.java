@@ -33,7 +33,8 @@ public class GameState {
 	}
 
 	@Override public String toString () {
-		return String.format("GameState<%d, %s>", timestamp, gold.toString());
+		// format doesnt work in gwt
+		return "GameState<"+ timestamp + ", " +gold.toString()+ ">";
 	}
 
 	public void addGold (long amount) {
