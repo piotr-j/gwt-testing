@@ -11,7 +11,7 @@ import com.mygdx.game.MyGdxGame;
 public class SplashScreen extends BaseScreen {
 	private final static String TAG = SplashScreen.class.getSimpleName();
 
-	private static final float MIN_SPLASH_TIME = 2.0f;
+	private static final float MIN_SPLASH_TIME = 0.5f;
 	private float splashTime;
 	private final Texture img;
 
