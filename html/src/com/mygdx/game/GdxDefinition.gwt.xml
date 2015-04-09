@@ -15,6 +15,6 @@
 	<set-configuration-property name="gdx.assetpath" value="../android/assets" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.strongjoshua.console.CommandExecutor" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.mygdx.game.MyCE" />
-	<extend-configuration-property name="gdx.reflect.include" value="com.mygdx.game.GameState" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.mygdx.game.state.GameState" />
 	<extend-configuration-property name="gdx.reflect.include" value="java.math.BigInteger" />
 </module>
