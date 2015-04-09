@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.state;
 
 import java.math.BigInteger;
 
@@ -18,6 +18,10 @@ public class GameState {
 		ts = BigInteger.valueOf(System.currentTimeMillis());
 	}
 
+	public void addGold (long amount) {
+		gold = gold.add(BigInteger.valueOf(amount));
+	}
+
 	public void persist() {
 
 	}
@@ -34,9 +38,5 @@ public class GameState {
 	@Override public String toString () {
 		// format doesnt work in gwt
 		return "GameState<"+ ts.toString() + ", " +gold.toString()+ ">";
-	}
-
-	public void addGold (long amount) {
-		gold = gold.add(BigInteger.valueOf(amount));
 	}
 }

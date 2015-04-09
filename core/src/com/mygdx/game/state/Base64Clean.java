@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.state;
 
 /**
  * Encoder/decoder adapted from http://iharder.net/base64
