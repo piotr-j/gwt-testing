@@ -6,17 +6,16 @@ import java.math.BigInteger;
  * Created by EvilEntity on 08/04/2015.
  */
 public class GameState {
-	int version = 1;
-	long timestamp = 0;
-	BigInteger gold;
+	public int version = 1;
+	public BigInteger gold;
+	public BigInteger ts;
 
 	public GameState () {
 		gold = new BigInteger("1234");
-
 	}
 
 	public void update() {
-		timestamp = System.currentTimeMillis();
+		ts = BigInteger.valueOf(System.currentTimeMillis());
 	}
 
 	public void persist() {
@@ -34,7 +33,7 @@ public class GameState {
 
 	@Override public String toString () {
 		// format doesnt work in gwt
-		return "GameState<"+ timestamp + ", " +gold.toString()+ ">";
+		return "GameState<"+ ts.toString() + ", " +gold.toString()+ ">";
 	}
 
 	public void addGold (long amount) {

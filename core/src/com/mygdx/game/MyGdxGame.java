@@ -1,20 +1,12 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.mygdx.game.screens.BaseScreen;
 import com.mygdx.game.screens.GameScreen;
 import com.mygdx.game.screens.OptionsScreen;
 import com.mygdx.game.screens.SplashScreen;
-import com.strongjoshua.console.Console;
-
-import java.math.BigInteger;
 
 public class MyGdxGame extends Game {
 	private final static String TAG = MyGdxGame.class.getSimpleName();

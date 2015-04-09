@@ -16,11 +16,11 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.Base64Clean;
 import com.mygdx.game.GameState;
-import com.mygdx.game.MyCE;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.MyCE;
 import com.strongjoshua.console.Console;
-//import org.apache.commons.codec.binary.Base64;
 
 import java.math.BigInteger;
 
@@ -68,7 +68,7 @@ public class GameScreen extends BaseScreen {
 		state.update();
 		state.addGold(5234442323L);
 
-		Gdx.app.log("State new:", state.toString());
+		log("State new:" + state.toString());
 
 		Json json = new Json(JsonWriter.OutputType.minimal);
 		json.setSerializer(BigInteger.class, new Json.Serializer<BigInteger>() {
@@ -81,19 +81,19 @@ public class GameScreen extends BaseScreen {
 			}
 		});
 
-//		Gdx.app.log("State json:", json.prettyPrint(state));
-//		String jsonState = json.toJson(state);
-//		String xorJsonState = xor(jsonState);
-//		String b64e = Base64.encodeBase64String(xorJsonState.getBytes());
-//
-//		Gdx.app.log("State json encoded:", b64e);
-//
-//		String b64d = xor(new String(Base64.decodeBase64(b64e)));
-//		Gdx.app.log("State json decoded:", b64d);
-//
-//		// check version and decode it...
-//		GameState stateFromJson = json.fromJson(GameState.class, b64d);
-//		Gdx.app.log("State from json:", stateFromJson.toString());
+		log("State json: " + json.prettyPrint(state));
+		String jsonState = json.toJson(state);
+		String b64e = Base64Clean.encodeBytes(xor(jsonState.getBytes()));
+
+		log("State json encoded: "+ b64e);
+
+		String b64d = new String(xor(Base64Clean.decode(b64e.getBytes())));
+
+		log("State json decoded: "+ b64d);
+
+		// check version and decode it...
+		GameState stateFromJson = json.fromJson(GameState.class, b64d);
+		log("State from json: " + stateFromJson.toString());
 	}
 
 	private String xor(String input) {
@@ -103,6 +103,23 @@ public class GameScreen extends BaseScreen {
 			sb.append((char)(input.charAt(i) ^ key.charAt(i % key.length())));
 		}
 		return sb.toString();
+	}
+//	private String xor(byte[] bytes) {
+//		String key = "goon";
+//		StringBuilder sb = new StringBuilder();
+//		for(int i = 0; i < bytes.length; i++) {
+//			sb.append((char)(bytes[i] ^ key.charAt(i % key.length())));
+//		}
+//		return sb.toString();
+//	}
+
+	private byte[] xor(byte[] bytes) {
+		String key = "goon";
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < bytes.length; i++) {
+			sb.append((char)(bytes[i] ^ key.charAt(i % key.length())));
+		}
+		return sb.toString().getBytes();
 	}
 
 	@Override public void update (float delta) {
