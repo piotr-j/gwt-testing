@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -20,6 +21,7 @@ import com.mygdx.game.Base64Clean;
 import com.mygdx.game.GameState;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyCE;
+import com.mygdx.game.state.BigIntSerializer;
 import com.strongjoshua.console.Console;
 
 import java.math.BigInteger;
@@ -71,15 +73,9 @@ public class GameScreen extends BaseScreen {
 		log("State new:" + state.toString());
 
 		Json json = new Json(JsonWriter.OutputType.minimal);
-		json.setSerializer(BigInteger.class, new Json.Serializer<BigInteger>() {
-			@Override public void write (Json json, BigInteger bigInteger, Class knownType) {
-				json.writeValue(bigInteger.toByteArray());
-			}
-
-			@Override public BigInteger read (Json json, JsonValue jsonData, Class type) {
-				return new BigInteger(jsonData.asByteArray());
-			}
-		});
+		// save all the data
+		json.setUsePrototypes(false);
+		json.setSerializer(BigInteger.class, new BigIntSerializer());
 
 		log("State json: " + json.prettyPrint(state));
 		String jsonState = json.toJson(state);
@@ -92,7 +88,19 @@ public class GameScreen extends BaseScreen {
 		log("State json decoded: "+ b64d);
 
 		// check version and decode it...
-		GameState stateFromJson = json.fromJson(GameState.class, b64d);
+		JsonReader jsonReader = new JsonReader();
+		JsonValue parsed = jsonReader.parse(b64d);
+		int version = parsed.get("version").asInt();
+		log("v: "+version);
+
+		GameState stateFromJson;
+		switch (version) {
+		case 1:
+			stateFromJson = json.fromJson(GameState.class, b64d);
+			break;
+		default:
+			stateFromJson = json.fromJson(GameState.class, b64d);
+		}
 		log("State from json: " + stateFromJson.toString());
 	}
 
