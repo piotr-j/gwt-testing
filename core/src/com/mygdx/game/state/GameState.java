@@ -37,6 +37,6 @@ public class GameState {
 
 	@Override public String toString () {
 		// format doesnt work in gwt
-		return "GameState<"+ ts.toString() + ", " +gold.toString()+ ">";
+		return "GameState<"+ BigIntFormat.formatEngineer(ts) + ", " +BigIntFormat.formatEngineer(gold) + ">";
 	}
 }
