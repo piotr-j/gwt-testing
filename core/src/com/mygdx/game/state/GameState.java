@@ -1,25 +1,27 @@
 package com.mygdx.game.state;
 
-import java.math.BigInteger;
+import com.badlogic.gdx.Gdx;
+
+import java.math.BigDecimal;
 
 /**
  * Created by EvilEntity on 08/04/2015.
  */
 public class GameState {
 	public int version = 1;
-	public BigInteger gold;
-	public BigInteger ts;
+	public BigDecimal gold;
+	public BigDecimal ts;
 
 	public GameState () {
-		gold = new BigInteger("1234");
+		gold = new BigDecimal("1234");
 	}
 
 	public void update() {
-		ts = BigInteger.valueOf(System.currentTimeMillis());
+		ts = BigDecimal.valueOf(System.currentTimeMillis());
 	}
 
 	public void addGold (long amount) {
-		gold = gold.add(BigInteger.valueOf(amount));
+		gold = gold.add(BigDecimal.valueOf(amount));
 	}
 
 	public void persist() {
@@ -37,6 +39,6 @@ public class GameState {
 
 	@Override public String toString () {
 		// format doesnt work in gwt
-		return "GameState<"+ BigIntFormat.formatEngineer(ts) + ", " +BigIntFormat.formatEngineer(gold) + ">";
+		return "GameState<"+ BigValueFormat.formatEngineer(ts) + ", " + BigValueFormat.formatEngineer(gold) + ">";
 	}
 }

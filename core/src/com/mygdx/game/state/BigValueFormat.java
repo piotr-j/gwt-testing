@@ -1,28 +1,26 @@
 package com.mygdx.game.state;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import com.badlogic.gdx.utils.StringBuilder;
 /**
  * Formats given BigInteger to specified format
  * Created by EvilEntity on 10/04/2015.
  */
-public class BigIntFormat {
+public class BigValueFormat {
 	public enum FormatType {ENGINEER}
 	private static StringBuilder sb;
-	private final static int PRECISION = 3;
-	private static char[] precChars = new char[PRECISION];
 
-	public static String format(BigInteger bigInteger, FormatType type) {
+	public static String format(BigDecimal bigDecimal, FormatType type) {
 		switch (type) {
 		case ENGINEER:
-			return formatEngineer(bigInteger);
+			return formatEngineer(bigDecimal);
 		}
-		return formatEngineer(bigInteger);
+		return formatEngineer(bigDecimal);
 	}
 
-	public static String formatEngineer(BigInteger bigInteger) {
-		if (bigInteger == null) return "BigIntFormatter null";
+	public static String formatEngineer(BigDecimal bigDecimal) {
+		if (bigDecimal == null) return "BigIntFormatter null";
 		if (sb == null) {
 			sb = new StringBuilder();
 		}
@@ -30,7 +28,7 @@ public class BigIntFormat {
 
 		// TODO localize stuff
 		//FIXME can we avoid this string?
-		String valAsStr = bigInteger.toString();
+		String valAsStr = bigDecimal.toString();
 
 		int length = valAsStr.length();
 

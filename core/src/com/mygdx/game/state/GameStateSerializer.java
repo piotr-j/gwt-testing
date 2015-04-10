@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.mygdx.game.screens.GameScreen;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 /**
  * Created by EvilEntity on 09/04/2015.
@@ -21,8 +21,15 @@ public class GameStateSerializer {
 		json = new Json(JsonWriter.OutputType.minimal);
 		// save all the data so we get defaults in the json
 		json.setUsePrototypes(false);
-		json.setSerializer(BigInteger.class, new BigIntSerializer());
+		json.setSerializer(BigDecimal.class, new Json.Serializer<BigDecimal>() {
+			@Override public void write (Json json, BigDecimal bigDecimal, Class knownType) {
+				json.writeValue(bigDecimal.toString());
+			}
 
+			@Override public BigDecimal read (Json json, JsonValue jsonData, Class type) {
+				return new BigDecimal(jsonData.asString());
+			}
+		});
 		sb = new StringBuilder();
 	}
 
