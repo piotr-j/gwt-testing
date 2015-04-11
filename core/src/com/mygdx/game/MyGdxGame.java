@@ -16,10 +16,7 @@ public class MyGdxGame extends Game {
 
 	private ObjectMap<ScreenType, BaseScreen> screens;
 
-	private CompatLayer listener;
-
-	public MyGdxGame(CompatLayer listener) {
-		this.listener = listener;
+	public MyGdxGame() {
 	}
 
 	@Override
@@ -39,7 +36,7 @@ public class MyGdxGame extends Game {
 				screen = new SplashScreen(this);
 				break;
 			case GAME:
-				screen = new GameScreen(this, listener);
+				screen = new GameScreen(this);
 				break;
 			case OPTIONS:
 				screen = new OptionsScreen(this);

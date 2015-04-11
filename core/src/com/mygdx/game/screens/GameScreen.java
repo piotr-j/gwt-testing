@@ -10,11 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.mygdx.game.Assets;
-import com.mygdx.game.CompatLayer;
 import com.mygdx.game.state.GameState;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.GameCE;
@@ -40,11 +36,9 @@ public class GameScreen extends BaseScreen {
 	private GameStateSerializer serializer;
 	private GameState state;
 	private TextButton button;
-	private CompatLayer actionListener;
 
-	public GameScreen (final MyGdxGame game, CompatLayer listener) {
+	public GameScreen (final MyGdxGame game) {
 		super(game);
-		actionListener = listener;
 		skin = assets.getSkin();
 		multiplexer = new InputMultiplexer();
 		stage = new Stage(new ScreenViewport(), batch);
@@ -85,7 +79,7 @@ public class GameScreen extends BaseScreen {
 		root.add(exportStateBtn).pad(10).row();
 		root.add(importStateBtn).pad(10).row();
 		stage.addActor(root);
-		stage.setDebugAll(true);
+
 		prefs = Gdx.app.getPreferences(PREFS);
 		serializer = new GameStateSerializer(this);
 		loadState();
@@ -103,22 +97,20 @@ public class GameScreen extends BaseScreen {
 		updateUI();
 	}
 
-
 	private void loadState () {
 		String stateData = prefs.getString(PREFS_STATE, null);
-		GameState gameState = loadState(stateData, true);
-		if (gameState != null) {
-			state = gameState;
-		} else {
-			state = new GameState();
+		GameState newState = loadState(stateData, true);
+		if (newState == null) {
+			newState = new GameState();
 		}
+		state = newState;
 		updateUI();
 	}
 
 	private GameState loadState (String stateData, boolean updateTicks) {
 		GameState state;
-		if (stateData == null) {
-			importFailedDialog();
+		if (stateData == null || stateData.length() == 0) {
+			log(TAG, "State data is empty");
 			return null;
 		}
 
@@ -135,7 +127,6 @@ public class GameScreen extends BaseScreen {
 			log(TAG, "State loaded!");
 		} else {
 			log(TAG, "State loading failed!");
-			importFailedDialog();
 		}
 		return state;
 	}
@@ -222,30 +213,34 @@ public class GameScreen extends BaseScreen {
 
 	}
 
-	private void exportStateDialog () {
-		actionListener.showExport(serializer.toJson(state));
-		final Dialog dialog = new Dialog("Export State", skin) {
-			@Override protected void result (Object object) {
-				actionListener.hideExport();
-			}
-		};
+	Input.TextInputListener exportListener = new Input.TextInputListener() {
+		@Override public void input (String text) { }
+		@Override public void canceled () { }
+	};
 
-		dialog.text(actionListener.getExportText());
-		dialog.button("OK");
-		dialog.show(stage);
+	private void exportStateDialog () {
+		String sData = serializer.toJson(state);
+		Gdx.input.getTextInput(exportListener, "Export game state", sData, "");
 	}
 
-	private void importStateDialog () {
-		actionListener.showImport();
-		final Dialog dialog = new Dialog("Import State", skin) {
-			@Override protected void result (Object object) {
-				setState(loadState(actionListener.hideImport(), false));
+	Input.TextInputListener importListener = new Input.TextInputListener() {
+		@Override public void input (String text) {
+			GameState gameState = loadState(text, false);
+			if (gameState == null) {
+				importFailedDialog();
+			} else {
+				setState(gameState);
+				updateUI();
 			}
-		};
+		}
 
-		dialog.text(actionListener.getImportText());
-		dialog.button("OK");
-		dialog.show(stage);
+		@Override public void canceled () {
+			log(TAG, "Import cancelled");
+		}
+	};
+
+	private void importStateDialog () {
+		Gdx.input.getTextInput(importListener, "Import game state", "", "Paste save data here");
 	}
 
 	private void importFailedDialog () {
@@ -258,22 +253,6 @@ public class GameScreen extends BaseScreen {
 	public void setState (GameState state) {
 		if (state != null)
 			this.state = state;
-	}
-
-	public void showExportDialog () {
-		final Dialog dialog = new Dialog("Import Failed", skin);
-		dialog.text("Export data:");
-		TextField field = new TextField(serializer.toJson(state), skin);
-		dialog.getContentTable().row();
-		dialog.getContentTable().add(field).expand().fill().row();
-		dialog.button("OK");
-		dialog.show(stage);
-		stage.setKeyboardFocus(field);
-		field.selectAll();
-	}
-
-	public void importGame (String data) {
-		setState(loadState(data, false));
 	}
 
 	public GameState getState () {
