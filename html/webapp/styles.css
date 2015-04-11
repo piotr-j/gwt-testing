@@ -41,3 +41,10 @@ body {
 .superdev:hover {
     background-color: rgb(100,100,100);
 }
+
+.ta-center {
+    text-align: center;
+}
+.ta-hidden {
+    visibility:hidden;
+}

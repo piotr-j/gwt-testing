@@ -30,6 +30,7 @@ public class BaseScreen implements Screen {
 	}
 
 	@Override public void render (float delta) {
+		batch.setProjectionMatrix(viewport.getCamera().combined);
 		update(delta);
 		draw();
 	}

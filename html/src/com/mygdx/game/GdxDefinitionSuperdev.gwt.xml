@@ -14,7 +14,7 @@
 	<set-configuration-property name="devModeRedirectEnabled" value="true"/>
 	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 	<extend-configuration-property name="gdx.reflect.include" value="com.strongjoshua.console.CommandExecutor" />
-	<extend-configuration-property name="gdx.reflect.include" value="com.mygdx.game.MyCE" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.mygdx.game.GameCE" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.mygdx.game.state.GameState" />
 	<extend-configuration-property name="gdx.reflect.include" value="java.math.BigDecimal" />
 </module>

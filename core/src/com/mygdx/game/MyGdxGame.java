@@ -10,12 +10,17 @@ import com.mygdx.game.screens.SplashScreen;
 
 public class MyGdxGame extends Game {
 	private final static String TAG = MyGdxGame.class.getSimpleName();
-
 	public enum ScreenType {SPLASH, GAME, OPTIONS}
 	private SpriteBatch batch;
 	private Assets assets;
 
 	private ObjectMap<ScreenType, BaseScreen> screens;
+
+	private CompatLayer listener;
+
+	public MyGdxGame(CompatLayer listener) {
+		this.listener = listener;
+	}
 
 	@Override
 	public void create () {
@@ -34,7 +39,7 @@ public class MyGdxGame extends Game {
 				screen = new SplashScreen(this);
 				break;
 			case GAME:
-				screen = new GameScreen(this);
+				screen = new GameScreen(this, listener);
 				break;
 			case OPTIONS:
 				screen = new OptionsScreen(this);
